@@ -226,8 +226,8 @@ int main ()
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
-  pid_steer.init(0.1, 0.01, 0.1, 1.2, -1.2); // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
-  pid_throttle.init(0.1, 0.01, 0.1, 1.0 -1.0; // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik 
+  pid_steer.Init(0.1, 0.01, 0.1, 1.2, -1.2); // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
+  pid_throttle.Init(0.1, 0.01, 0.1, 1.0, -1.0); // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik 
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -340,13 +340,13 @@ int main ()
           * TODO (step 2): compute the throttle error (error_throttle) from the position and the desired speed
           **/
           // modify the following line for step 2
-          error_throttle = 0
+          //error_throttle = 0;
 
           // Calculate the velocity error as the difference between the 
           // target velocity at the end of the horizon and the current speed.
           // Indexing: v_points.back() accesses the last element of the vector, 
           // acting as a look-ahead reference for smoother transitions.
-          //error_throttle = v_points.back() - velocity;
+          error_throttle = v_points.back() - velocity;
 
 
           double throttle_output;
@@ -356,27 +356,27 @@ int main ()
           * TODO (step 2): uncomment these lines
           **/
            // Compute control to apply
-//           pid_throttle.UpdateError(error_throttle);
-//           double throttle = pid_throttle.TotalError();
+           pid_throttle.UpdateError(error_throttle);
+           double throttle = pid_throttle.TotalError();
 
-//           // Adapt the negative throttle to break
-//           if (throttle > 0.0) {
-//             throttle_output = throttle;
-//             brake_output = 0;
-//           } else {
-//             throttle_output = 0;
-//             brake_output = -throttle;
-//           }
+           // Adapt the negative throttle to break
+           if (throttle > 0.0) {
+             throttle_output = throttle;
+             brake_output = 0;
+           } else {
+             throttle_output = 0;
+             brake_output = -throttle;
+           }
 
-//           // Save data
-//           file_throttle.seekg(std::ios::beg);
-//           for(int j=0; j < i - 1; ++j){
-//               file_throttle.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
-//           }
-//           file_throttle  << i ;
-//           file_throttle  << " " << error_throttle;
-//           file_throttle  << " " << brake_output;
-//           file_throttle  << " " << throttle_output << endl;
+           // Save data
+           file_throttle.seekg(std::ios::beg);
+           for(int j=0; j < i - 1; ++j){
+               file_throttle.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+           }
+           file_throttle  << i ;
+           file_throttle  << " " << error_throttle;
+           file_throttle  << " " << brake_output;
+           file_throttle  << " " << throttle_output << endl;
 
 
           // Send control
