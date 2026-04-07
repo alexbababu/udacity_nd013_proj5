@@ -195,6 +195,23 @@ void set_obst(vector<double> x_points, vector<double> y_points, vector<State>& o
 	obst_flag = true;
 }
 
+int find_index_nearest_point(vector<double> x_points, vector<double> y_points, double x, double y){
+  double min_dist = 1e9;
+  int min_index = -1;
+  for(int i = 0; i < x_points.size(); i++){
+    double dist = sqrt(pow(x_points[i] - x, 2) + pow(y_points[i] - y, 2));
+    if(dist < min_dist){
+      min_dist = dist;
+      min_index = i;
+    }
+  }
+  return min_index;
+}
+
+double angle_between_points(double x1, double y1, double x2, double y2){
+  return atan2(y2-y1, x2-x1);
+}
+
 int main ()
 {
   cout << "starting server" << endl;
@@ -226,8 +243,8 @@ int main ()
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
-  pid_steer.Init(0.1, 0.01, 0.1, 1.2, -1.2); // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
-  pid_throttle.Init(0.1, 0.01, 0.1, 1.0, -1.0); // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik 
+  pid_steer.Init(0.2, 0.001, 0.35, 1.2, -1.2); // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
+  pid_throttle.Init(0.2, 0.001, 0.02, 1.0, -1.0); // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik 
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -281,7 +298,7 @@ int main ()
           time(&timer);
           new_delta_time = difftime(timer, prev_timer);
           prev_timer = timer;
-
+          int nearest_point_idx = find_index_nearest_point(x_points, y_points, x_position, y_position); // Calculate the index of the nearest point on the trajectory
           ////////////////////////////////////////
           // Steering control
           ////////////////////////////////////////
@@ -294,19 +311,19 @@ int main ()
 
           // Compute steer error
           double error_steer;
-          // Calculate the cross-track error (CTE) by finding the difference 
-          // between the first target Y-coordinate and the current Y-position.
-          // Indexing: y_points[0] accesses the very first element of the vector, 
-          // representing the immediate target on the planned trajectory.
-          //double error_steer = y_points[0] - y_position;
+          
 
           double steer_output;
 
           /**
           * TODO (step 3): compute the steer error (error_steer) from the position and the desired trajectory
           **/
-//           error_steer = 0;
-
+          error_steer = 0;
+          // Determine the steering error by calculating the heading difference.
+          // First, find the closest waypoint on the trajectory to the current position.
+          // Then, subtract the desired angle (to reach that point) from the current vehicle yaw.
+          
+          //error_steer = yaw - angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
 
           /**
           * TODO (step 3): uncomment these lines
@@ -346,7 +363,7 @@ int main ()
           // target velocity at the end of the horizon and the current speed.
           // Indexing: v_points.back() accesses the last element of the vector, 
           // acting as a look-ahead reference for smoother transitions.
-          error_throttle = v_points.back() - velocity;
+          error_throttle = velocity - v_points[nearest_point_idx];
 
 
           double throttle_output;
