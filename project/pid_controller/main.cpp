@@ -208,10 +208,6 @@ int find_index_nearest_point(vector<double> x_points, vector<double> y_points, d
   return min_index;
 }
 
-double angle_between_points(double x1, double y1, double x2, double y2){
-  return atan2(y2-y1, x2-x1);
-}
-
 int main ()
 {
   cout << "starting server" << endl;
