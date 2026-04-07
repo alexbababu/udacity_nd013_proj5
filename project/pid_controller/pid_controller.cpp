@@ -36,11 +36,10 @@ void PID::UpdateError(double cte) {
    /**
    * TODO: Update PID errors based on cte.
    **/
-   previous_track_error = track_error;
+   previous_track_error = track_error; // save the previous error for derivative calculation
    track_error = cte;
-   integral_error += cte * dt;
-   derivative_error = (track_error - previous_track_error) / dt;
-
+   integral_error += cte * dt; // integrate the error over time
+   derivative_error = (track_error - previous_track_error) / dt;  // calculate the derivative of the error
 }
 
 double PID::TotalError() {
@@ -49,10 +48,10 @@ double PID::TotalError() {
     * The code should return a value in the interval [output_lim_mini, output_lim_maxi]
    */
     double control;
-    control = Kp * track_error + Ki * integral_error + Kd * derivative_error;
-    if (control > output_lim_max) {
+    control = Kp * track_error + Ki * integral_error + Kd * derivative_error;  // calculate the control output from the PID formula
+    if (control > output_lim_max) { // limit the control output to the maximum value
         control = output_lim_max;
-    } else if (control < output_lim_min) {
+    } else if (control < output_lim_min) { // limit the control output to the minimum value
         control = output_lim_min;
     }
     return control;

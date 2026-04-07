@@ -226,7 +226,8 @@ int main ()
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
-  
+  pid_steer.init(0.1, 0.01, 0.1, 1.0, -1.0); // 1.0 and -1.0 are the output limits for the steer command, and are given in the rubrik
+  pid_throttle.init(0.1, 0.01, 0.1, 1.2, -1.2); // 1.2 and -1.2 are the output limits for the throttle command, and are given in the rubrik 
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
@@ -293,7 +294,11 @@ int main ()
 
           // Compute steer error
           double error_steer;
-          //double error_steer = spirals_y[best_spirals[0]][0] - y_position;
+          // Calculate the cross-track error (CTE) by finding the difference 
+          // between the first target Y-coordinate and the current Y-position.
+          // Indexing: y_points[0] accesses the very first element of the vector, 
+          // representing the immediate target on the planned trajectory.
+          //double error_steer = y_points[0] - y_position;
 
           double steer_output;
 
@@ -336,7 +341,12 @@ int main ()
           **/
           // modify the following line for step 2
           error_throttle = 0
-          //error_throttle = spirals_v[best_spirals[0]][0] - velocity;
+
+          // Calculate the velocity error as the difference between the 
+          // target velocity at the end of the horizon and the current speed.
+          // Indexing: v_points.back() accesses the last element of the vector, 
+          // acting as a look-ahead reference for smoother transitions.
+          //error_throttle = v_points.back() - velocity;
 
 
           double throttle_output;
