@@ -226,8 +226,8 @@ int main ()
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
-  pid_steer.init(0.1, 0.01, 0.1, 1.0, -1.0); // 1.0 and -1.0 are the output limits for the steer command, and are given in the rubrik
-  pid_throttle.init(0.1, 0.01, 0.1, 1.2, -1.2); // 1.2 and -1.2 are the output limits for the throttle command, and are given in the rubrik 
+  pid_steer.init(0.1, 0.01, 0.1, 1.2, -1.2); // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
+  pid_throttle.init(0.1, 0.01, 0.1, 1.0 -1.0; // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik 
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer, &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode)
   {
