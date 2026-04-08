@@ -203,7 +203,7 @@ int find_index_nearest_point(vector<double> x_points, vector<double> y_points,
     if (i == 0) {
       min_dist = dist;
       min_index = i;
-    } else (dist < min_dist) {
+    } else if (dist < min_dist) {
       min_dist = dist;
       min_index = i;
     }
