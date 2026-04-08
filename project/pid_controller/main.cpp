@@ -376,6 +376,10 @@ int main(int argc, char *argv[]) {
       // Compute control to apply
       pid_steer.UpdateError(error_steer);
       steer_output = pid_steer.TotalError();
+      std::cout << "!---- CTE: " << pid_steer.track_error << endl;
+      std::cout << "!---- Integral: " << pid_steer.integral_error << endl;
+      std::cout << "!---- Derivative: " << pid_steer.derivative_error << endl;
+      std::cout << "!---- Steer Output: " << steer_output << endl;
 
       // Save data
       file_steer.seekg(std::ios::beg);
