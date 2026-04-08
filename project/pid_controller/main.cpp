@@ -242,12 +242,8 @@ int main() {
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
-  pid_steer.Init(0.2, 0.001, 0.35, 1.2,
-                 -1.2);  // 1.2 and -1.2 are the output limits for the steer
-                         // command, and are given in the rubrik
-  pid_throttle.Init(0.2, 0.001, 0.02, 1.0,
-                    -1.0);  // 1.0 and -1.0 are the output limits for the
-                            // throttle command, and are given in the rubrik
+  pid_steer.Init(0.5, 0.001, 0.35, 1.2, -1.2);  // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
+  pid_throttle.Init(0.2, 0.001, 0.02, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer,
                &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char* data,
@@ -332,9 +328,7 @@ int main() {
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
 
-      error_steer = yaw - angle_between_points(x_position, y_position,
-                                         x_points[nearest_point_idx],
-                                         y_points[nearest_point_idx]);
+      error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
 
       /**
        * TODO (step 3): uncomment these lines
