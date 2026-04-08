@@ -353,8 +353,13 @@ int main(int argc, char *argv[]) {
       //  First, find the closest waypoint on the trajectory to the current
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
+      /*int lookahead_points = 5;   
+      int lookahead_idx = nearest_point_idx + lookahead_points;
+      if (lookahead_idx >= x_points.size()) {
+        lookahead_idx = x_points.size() - 1;
+      }
+      error_steer = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]) - yaw; // not tested yet*/
       error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
-
       /**
        * TODO (step 3): uncomment these lines
        **/
