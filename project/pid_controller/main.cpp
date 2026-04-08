@@ -196,11 +196,14 @@ void set_obst(vector<double> x_points, vector<double> y_points,
 
 int find_index_nearest_point(vector<double> x_points, vector<double> y_points,
                              double x, double y) {
-  double min_dist = 1e9;
-  int min_index = -1;
+  double min_dist = 0;
+  int min_index = 0;
   for (int i = 0; i < x_points.size(); i++) {
     double dist = sqrt(pow(x_points[i] - x, 2) + pow(y_points[i] - y, 2));
-    if (dist < min_dist) {
+    if (i == 0) {
+      min_dist = dist;
+      min_index = i;
+    } else (dist < min_dist) {
       min_dist = dist;
       min_index = i;
     }
@@ -351,7 +354,7 @@ int main(int argc, char *argv[]) {
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
 
-      error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_position) - yaw;
+      error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
 
       /**
        * TODO (step 3): uncomment these lines
