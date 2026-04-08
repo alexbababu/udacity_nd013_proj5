@@ -360,7 +360,7 @@ int main(int argc, char *argv[]) {
       if (lookahead_idx >= x_points.size()) {
         lookahead_idx = x_points.size() - 1;
       }
-      error_steer = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]) - yaw; // not tested yet
+      error_steer = yaw - angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]); // not tested yet
       
       std::cout << "!---- x_position: " << x_position << endl;
       std::cout << "!---- y_position: " << y_position << endl;
