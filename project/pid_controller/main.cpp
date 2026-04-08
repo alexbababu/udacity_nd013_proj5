@@ -410,7 +410,9 @@ int main(int argc, char *argv[]) {
       // Indexing: v_points.back() accesses the last element of the vector,
       // acting as a look-ahead reference for smoother transitions.
       error_throttle = velocity - v_points[nearest_point_idx];
-
+      std::cout << "!---- velocity: " << velocity << endl;
+      std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
+      std::cout << "!!---- error_throttle: " << error_throttle << endl;
       double throttle_output;
       double brake_output;
 
