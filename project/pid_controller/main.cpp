@@ -274,7 +274,7 @@ int main(int argc, char *argv[]) {
   pid_throttle.Init(Kp_throttle, Ki_throttle, Kd_throttle, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer,
-               &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char* data,
+               &i, &gain](uWS::WebSocket<uWS::SERVER> ws, char* data,
                                 size_t length, uWS::OpCode opCode) {
     auto s = hasData(data);
 
