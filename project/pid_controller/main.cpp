@@ -246,7 +246,7 @@ int main(int argc, char *argv[]) {
   double Ki_steer = 0.0011;
   double Kd_steer = 0.71;
   double Kp_throttle = 0.21;
-  double Ki_throttle = 0.001;
+  double Ki_throttle = 0.0011;
   double Kd_throttle = 0.019;
 
   if (argc == 7) {
