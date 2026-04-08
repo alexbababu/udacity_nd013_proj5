@@ -368,7 +368,7 @@ int main(int argc, char *argv[]) {
       std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
       std::cout << "!---- yaw: " << yaw << endl;
       std::cout << "!---- angle_between_points: " << angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) << endl;
-      error_steer = yaw -angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) + y_position -y_points[nearest_point_idx];
+      error_steer = yaw -angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) +y_position -y_points[nearest_point_idx];
       std::cout << "!!---- error_steer: " << error_steer << endl;
       /**
        * TODO (step 3): uncomment these lines
@@ -413,7 +413,7 @@ int main(int argc, char *argv[]) {
       // target velocity at the end of the horizon and the current speed.
       // Indexing: v_points.back() accesses the last element of the vector,
       // acting as a look-ahead reference for smoother transitions.
-      error_throttle = v_points[nearest_point_idx] - velocity;
+      error_throttle = velocity - v_points[nearest_point_idx];
       std::cout << "!---- velocity: " << velocity << endl;
       std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
       //std::cout << "!!---- error_throttle: " << error_throttle << endl;
