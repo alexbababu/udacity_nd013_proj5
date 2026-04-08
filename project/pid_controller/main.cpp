@@ -399,7 +399,7 @@ int main(int argc, char *argv[]) {
       // target velocity at the end of the horizon and the current speed.
       // Indexing: v_points.back() accesses the last element of the vector,
       // acting as a look-ahead reference for smoother transitions.
-      error_throttle = velocity - v_points[nearest_point_idx];
+      error_throttle = velocity - v_points[nearest_point_idx] - 0.25*abs(steer_output);
 
       double throttle_output;
       double brake_output;
