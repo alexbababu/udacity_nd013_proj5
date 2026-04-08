@@ -362,10 +362,10 @@ int main(int argc, char *argv[]) {
       }
       error_steer = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]) - yaw; // not tested yet*/
       
-      std::cout << "!---- x_position: " << x_position << endl;
-      std::cout << "!---- y_position: " << y_position << endl;
-      std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
-      std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
+      //std::cout << "!---- x_position: " << x_position << endl;
+      //std::cout << "!---- y_position: " << y_position << endl;
+      //std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
+      //std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
       std::cout << "!---- yaw: " << yaw << endl;
       std::cout << "!---- angle_between_points: " << angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) << endl;
       error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
@@ -376,9 +376,9 @@ int main(int argc, char *argv[]) {
       // Compute control to apply
       pid_steer.UpdateError(error_steer);
       steer_output = pid_steer.TotalError();
-      std::cout << "!---- CTE: " << pid_steer.track_error << endl;
-      std::cout << "!---- Integral: " << pid_steer.integral_error << endl;
-      std::cout << "!---- Derivative: " << pid_steer.derivative_error << endl;
+      std::cout << "!---- CTE: " << pid_steer.Kp * pid_steer.track_error << endl;
+      std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
+      std::cout << "!---- Derivative: " << pid_steer.Kd * pid_steer.derivative_error << endl;
       std::cout << "!---- Steer Output: " << steer_output << endl;
 
       // Save data
@@ -416,7 +416,7 @@ int main(int argc, char *argv[]) {
       error_throttle = velocity - v_points[nearest_point_idx];
       std::cout << "!---- velocity: " << velocity << endl;
       std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
-      std::cout << "!!---- error_throttle: " << error_throttle << endl;
+      //std::cout << "!!---- error_throttle: " << error_throttle << endl;
       double throttle_output;
       double brake_output;
 
@@ -426,9 +426,9 @@ int main(int argc, char *argv[]) {
       // Compute control to apply
       pid_throttle.UpdateError(error_throttle);
       double throttle = pid_throttle.TotalError();
-      std::cout << "!!---- throttle: " << throttle << endl;
+      //std::cout << "!!---- throttle: " << throttle << endl;
       throttle = throttle - gain*abs(steer_output);
-      std::cout << "!!---- steer output: " << steer_output << " gained steer output: " << 0.25*abs(steer_output) << " ----!!" << endl;
+      //std::cout << "!!---- steer output: " << steer_output << " gained steer output: " << 0.25*abs(steer_output) << " ----!!" << endl;
       // Adapt the negative throttle to break
       if (throttle > 0.0) {
         throttle_output = throttle;
