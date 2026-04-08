@@ -250,7 +250,7 @@ int main(int argc, char *argv[]) {
   double Ki_throttle = 0.0011;
   double Kd_throttle = 0.019;
 
-  if (argc == 7) {
+  if (argc == 8) {
     try {
       gain = std::stod(argv[1]);
       Kp_steer = std::stod(argv[2]);
