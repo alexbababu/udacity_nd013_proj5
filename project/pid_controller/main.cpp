@@ -242,7 +242,7 @@ int main() {
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
-  pid_steer.Init(0.25, 0.001, 0.5, 1.2, -1.2);  // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
+  pid_steer.Init(0.25, 0.0005, 0.4, 1.2, -1.2);  // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
   pid_throttle.Init(0.2, 0.001, 0.02, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer,
