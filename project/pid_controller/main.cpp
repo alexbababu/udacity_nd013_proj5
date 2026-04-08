@@ -332,10 +332,9 @@ int main() {
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
 
-      error_steer = angle_between_points(x_position, y_position,
+      error_steer = yaw - angle_between_points(x_position, y_position,
                                          x_points[nearest_point_idx],
-                                         y_points[nearest_point_idx]) -
-                    yaw;
+                                         y_points[nearest_point_idx]);
 
       /**
        * TODO (step 3): uncomment these lines
