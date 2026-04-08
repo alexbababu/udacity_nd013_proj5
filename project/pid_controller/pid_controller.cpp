@@ -5,9 +5,9 @@
  **********************************************/
 
 #include "pid_controller.h"
-#include <vector>
-#include <iostream>
 #include <math.h>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -15,55 +15,63 @@ PID::PID() {}
 
 PID::~PID() {}
 
-void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi, double output_lim_mini) {
-   /**
+void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi,
+               double output_lim_mini) {
+  /**
    * TODO: Initialize PID coefficients (and errors, if needed)
    **/
-   Kp = Kpi;
-   Ki = Kii;
-   Kd = Kdi;
-   output_lim_max = output_lim_maxi;
-   output_lim_min = output_lim_mini;
-   track_error = 0.0;
-   previous_track_error = 0.0;
-   integral_error = 0.0;
-   derivative_error = 0.0;
-   dt = 0.0;
+  Kp = Kpi;
+  Ki = Kii;
+  Kd = Kdi;
+  output_lim_max = output_lim_maxi;
+  output_lim_min = output_lim_mini;
+  track_error = 0.0;
+  previous_track_error = 0.0;
+  integral_error = 0.0;
+  derivative_error = 0.0;
+  dt = 0.0;
 }
 
-
 void PID::UpdateError(double cte) {
-   /**
+  /**
    * TODO: Update PID errors based on cte.
    **/
-   previous_track_error = track_error; // save the previous error for derivative calculation
-   track_error = cte;
-   integral_error += cte * dt; // integrate the error over time
-   if (dt != 0) {
-     derivative_error = (track_error - previous_track_error) / dt;  // calculate the derivative of the error
-   } else {
-     derivative_error = 0;
-   }
+  previous_track_error =
+      track_error;  // save the previous error for derivative calculation
+  track_error = cte;
+  integral_error += cte * dt;  // integrate the error over time
+  if (dt != 0) {
+    derivative_error = (track_error - previous_track_error) /
+                       dt;  // calculate the derivative of the error
+  } else {
+    derivative_error = 0;
+  }
 }
 
 double PID::TotalError() {
-   /**
+  /**
    * TODO: Calculate and return the total error
-    * The code should return a value in the interval [output_lim_mini, output_lim_maxi]
+   * The code should return a value in the interval [output_lim_mini,
+   * output_lim_maxi]
    */
-    double control;
-    control = - (Kp * track_error + Ki * integral_error + Kd * derivative_error);  // calculate the control output from the PID formula
-    if (control > output_lim_max) { // limit the control output to the maximum value
-        control = output_lim_max;
-    } else if (control < output_lim_min) { // limit the control output to the minimum value
-        control = output_lim_min;
-    }
-    return control;
+  double control;
+  control = (Kp * track_error + Ki * integral_error +
+             Kd * derivative_error);  // calculate the control output from the
+                                      // PID formula
+  if (control >
+      output_lim_max) {  // limit the control output to the maximum value
+    control = output_lim_max;
+  } else if (control <
+             output_lim_min) {  // limit the control output to the minimum value
+    control = output_lim_min;
+  }
+  return control;
 }
 
 double PID::UpdateDeltaTime(double new_delta_time) {
-   /**
+  /**
    * TODO: Update the delta time with new value
    */
-   dt = new_delta_time;
+  dt = new_delta_time;
+  return dt;
 }
