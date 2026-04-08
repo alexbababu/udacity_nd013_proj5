@@ -208,7 +208,7 @@ int find_index_nearest_point(vector<double> x_points, vector<double> y_points,
   return min_index;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   cout << "starting server" << endl;
   uWS::Hub h;
 
@@ -239,11 +239,34 @@ int main() {
    * TODO (Step 1): create pid (pid_throttle) for throttle command and
    * initialize values
    **/
+  double Kp_steer = 0.29;
+  double Ki_steer = 0.0011;
+  double Kd_steer = 0.71;
+  double Kp_throttle = 0.21;
+  double Ki_throttle = 0.001;
+  double Kd_throttle = 0.019;
+
+  if (argc == 7) {
+    try {
+      Kp_steer = std::stod(argv[1]);
+      Ki_steer = std::stod(argv[2]);
+      Kd_steer = std::stod(argv[3]);
+      Kp_throttle = std::stod(argv[4]);
+      Ki_throttle = std::stod(argv[5]);
+      Kd_throttle = std::stod(argv[6]);
+    } catch (const std::exception& e) {
+      std::cerr << "Error parsing arguments: " << e.what() << "\n";
+      return 1;
+    }
+  } else if (argc > 1) {
+    std::cerr << "Usage: " << argv[0] << " <Kp_steer> <Ki_steer> <Kd_steer> <Kp_throttle> <Ki_throttle> <Kd_throttle>\n";
+    return 1;
+  }
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
-  pid_steer.Init(0.29, 0.0011,0.71, 1.2, -1.2);  // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
-  pid_throttle.Init(0.21,0.001,0.019, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
+  pid_steer.Init(Kp_steer, Ki_steer, Kd_steer, 1.2, -1.2);  // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
+  pid_throttle.Init(Kp_throttle, Ki_throttle, Kd_throttle, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer,
                &i, &prev_timer](uWS::WebSocket<uWS::SERVER> ws, char* data,
