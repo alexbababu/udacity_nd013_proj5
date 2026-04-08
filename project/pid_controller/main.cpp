@@ -242,9 +242,9 @@ int main(int argc, char *argv[]) {
    * TODO (Step 1): create pid (pid_throttle) for throttle command and
    * initialize values
    **/
-  double Kp_steer = 0.29;
-  double Ki_steer = 0.0011;
-  double Kd_steer = 0.71;
+  double Kp_steer = 0.38;
+  double Ki_steer = 0.0005;
+  double Kd_steer = 0.45;
   double Kp_throttle = 0.21;
   double Ki_throttle = 0.0011;
   double Kd_throttle = 0.019;
