@@ -410,7 +410,7 @@ int main(int argc, char *argv[]) {
       // Compute control to apply
       pid_throttle.UpdateError(error_throttle);
       double throttle = pid_throttle.TotalError() - 0.25*abs(steer_output);
-
+      std::cout << "!!---- throttle: " << throttle << "gained steer output: " << 0.25*abs(steer_output) << " ----!!" << endl;
       // Adapt the negative throttle to break
       if (throttle > 0.0) {
         throttle_output = throttle;
