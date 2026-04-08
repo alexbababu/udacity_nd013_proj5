@@ -368,7 +368,7 @@ int main(int argc, char *argv[]) {
       std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
       std::cout << "!---- yaw: " << yaw << endl;
       std::cout << "!---- angle_between_points: " << angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) << endl;
-      error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
+      error_steer = yaw - angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
       std::cout << "!!---- error_steer: " << error_steer << endl;
       /**
        * TODO (step 3): uncomment these lines
