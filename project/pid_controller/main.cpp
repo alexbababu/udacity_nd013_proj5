@@ -242,6 +242,7 @@ int main(int argc, char *argv[]) {
    * TODO (Step 1): create pid (pid_throttle) for throttle command and
    * initialize values
    **/
+  double gain = 0.25; 
   double Kp_steer = 0.38;
   double Ki_steer = 0.0005;
   double Kd_steer = 0.45;
@@ -251,12 +252,13 @@ int main(int argc, char *argv[]) {
 
   if (argc == 7) {
     try {
-      Kp_steer = std::stod(argv[1]);
-      Ki_steer = std::stod(argv[2]);
-      Kd_steer = std::stod(argv[3]);
-      Kp_throttle = std::stod(argv[4]);
-      Ki_throttle = std::stod(argv[5]);
-      Kd_throttle = std::stod(argv[6]);
+      gain = std::stod(argv[1]);
+      Kp_steer = std::stod(argv[2]);
+      Ki_steer = std::stod(argv[3]);
+      Kd_steer = std::stod(argv[4]);
+      Kp_throttle = std::stod(argv[5]);
+      Ki_throttle = std::stod(argv[6]);
+      Kd_throttle = std::stod(argv[7]);
     } catch (const std::exception& e) {
       std::cerr << "Error parsing arguments: " << e.what() << "\n";
       return 1;
@@ -411,7 +413,7 @@ int main(int argc, char *argv[]) {
       pid_throttle.UpdateError(error_throttle);
       double throttle = pid_throttle.TotalError();
       std::cout << "!!---- throttle: " << throttle << endl;
-      throttle = throttle - 0.25*abs(steer_output);
+      throttle = throttle - gain*abs(steer_output);
       std::cout << "!!---- steer output: " << steer_output << " gained steer output: " << 0.25*abs(steer_output) << " ----!!" << endl;
       // Adapt the negative throttle to break
       if (throttle > 0.0) {
