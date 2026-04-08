@@ -409,7 +409,7 @@ int main(int argc, char *argv[]) {
        **/
       // Compute control to apply
       pid_throttle.UpdateError(error_throttle);
-      double throttle = pid_throttle.TotalError()
+      double throttle = pid_throttle.TotalError();
       std::cout << "!!---- throttle: " << throttle << endl;
       throttle = throttle - 0.25*abs(steer_output);
       std::cout << "!!---- steer output: " << steer_output << " gained steer output: " << 0.25*abs(steer_output) << " ----!!" << endl;
