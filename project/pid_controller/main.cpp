@@ -359,7 +359,7 @@ int main(int argc, char *argv[]) {
         lookahead_idx = x_points.size() - 1;
       }
       error_steer = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]) - yaw; // not tested yet*/
-      error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
+      error_steer = yaw - angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
       /**
        * TODO (step 3): uncomment these lines
        **/
@@ -399,7 +399,7 @@ int main(int argc, char *argv[]) {
       // target velocity at the end of the horizon and the current speed.
       // Indexing: v_points.back() accesses the last element of the vector,
       // acting as a look-ahead reference for smoother transitions.
-      error_throttle = v_points[nearest_point_idx] - velocity;
+      error_throttle = velocity - v_points[nearest_point_idx];
 
       double throttle_output;
       double brake_output;
