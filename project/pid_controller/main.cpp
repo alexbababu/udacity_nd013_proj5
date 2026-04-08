@@ -353,9 +353,7 @@ int main(int argc, char *argv[]) {
       //  First, find the closest waypoint on the trajectory to the current
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
-      double desired_yaw = angle_between_points(x_points[nearest_point_idx], y_points[nearest_point_idx], x_points[nearest_point_idx+1], y_points[nearest_point_idx+1]);
-      error_steer = desired_yaw - yaw;
-      
+      error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
 
       /**
        * TODO (step 3): uncomment these lines
