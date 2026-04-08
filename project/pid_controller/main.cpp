@@ -362,10 +362,10 @@ int main(int argc, char *argv[]) {
       }
       error_steer = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]) - yaw; // not tested yet*/
       
-      //std::cout << "!---- x_position: " << x_position << endl;
-      //std::cout << "!---- y_position: " << y_position << endl;
-      //std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
-      //std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
+      std::cout << "!---- x_position: " << x_position << endl;
+      std::cout << "!---- y_position: " << y_position << endl;
+      std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
+      std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
       std::cout << "!---- yaw: " << yaw << endl;
       std::cout << "!---- angle_between_points: " << angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) << endl;
       error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
