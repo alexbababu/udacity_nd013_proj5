@@ -46,11 +46,11 @@ void PID::UpdateError(double cte) {
   } else {
     derivative_error = 0;
   }
-  std::cout << "!!---- cte: " << cte << " ----!!" << endl;
-  std::cout << "!!---- track_error: " << track_error << " ----!!" << endl; 
-  std::cout << "!!---- integral_error: " << integral_error << " ----!!" << endl;
-  std::cout << "!!---- derivative_error: " << derivative_error << " ----!!" << endl;
-  std::cout << "!!---- dt: " << dt << " ----!!" << endl;
+  //std::cout << "!!---- cte: " << cte << " ----!!" << endl;
+  //std::cout << "!!---- track_error: " << track_error << " ----!!" << endl; 
+  //std::cout << "!!---- integral_error: " << integral_error << " ----!!" << endl;
+  //std::cout << "!!---- derivative_error: " << derivative_error << " ----!!" << endl;
+  //std::cout << "!!---- dt: " << dt << " ----!!" << endl;
 }
 
 double PID::TotalError() {

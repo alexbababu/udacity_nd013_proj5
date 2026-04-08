@@ -355,7 +355,9 @@ int main(int argc, char *argv[]) {
       //  the current vehicle yaw.
 
       error_steer = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) - yaw;
-
+      std::cout << "!!---- angle_between_points: " << angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) << " ----!!" << endl;
+      std::cout << "!!---- yaw: " << yaw << " ----!!" << endl;
+      std::cout << "!!---- error_steer: " << error_steer << " ----!!" << endl;
       /**
        * TODO (step 3): uncomment these lines
        **/
