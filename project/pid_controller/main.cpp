@@ -367,7 +367,7 @@ int main(int argc, char *argv[]) {
       //std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
       //std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
       //double desired_yaw = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
-      error_steer = yaw -desired_yaw;
+      error_steer = yaw - desired_yaw;
       while (error_steer > M_PI) error_steer -= 2 * M_PI;
       while (error_steer < -M_PI) error_steer += 2 * M_PI;
       std::cout << "-----------------------" << endl;
