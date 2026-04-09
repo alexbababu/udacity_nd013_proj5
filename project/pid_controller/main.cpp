@@ -367,7 +367,6 @@ int main(int argc, char *argv[]) {
       std::cout << "!---- y_position: " << y_position << endl;
       std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
       std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
-      std::cout << "!---- yaw: " << yaw << endl;
       double desired_yaw = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
       error_steer = yaw -desired_yaw;
       while (error_steer > M_PI) error_steer -= 2 * M_PI;
@@ -424,7 +423,7 @@ int main(int argc, char *argv[]) {
       error_throttle = desired_v - velocity;
       std::cout << "!---- velocity: " << velocity << endl;
       std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
-      //std::cout << "!!---- error_throttle: " << error_throttle << endl;
+      std::cout << "!!---- error_throttle: " << error_throttle << endl;
       double throttle_output;
       double brake_output;
 
@@ -434,8 +433,8 @@ int main(int argc, char *argv[]) {
       // Compute control to apply
       pid_throttle.UpdateError(error_throttle, first_update);
       double throttle = pid_throttle.TotalError();
-      //std::cout << "!!---- throttle: " << throttle << endl;
-      throttle = throttle - gain*abs(steer_output);
+      std::cout << "!!---- throttle: " << throttle << endl;
+      //throttle = throttle - gain*abs(steer_output);
       //std::cout << "!!---- steer output: " << steer_output << " gained steer output: " << 0.25*abs(steer_output) << " ----!!" << endl;
       // Adapt the negative throttle to break
       if (throttle > 0.0) {
