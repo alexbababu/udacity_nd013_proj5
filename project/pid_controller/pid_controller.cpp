@@ -37,9 +37,7 @@ void PID::UpdateError(double cte) {
    * TODO: Update PID errors based on cte.
    **/
   previous_track_error = track_error;  // save the previous error for derivative calculation
-  std::cout << "!!---- previous_track_error: " << previous_track_error << " ----!!" << endl;
   track_error = cte;
-  std::cout << "!!---- track_error: " << track_error << " ----!!" << endl;
   integral_error += cte * dt;  // integrate the error over time
   if (dt != 0) {
     derivative_error = (track_error - previous_track_error) / dt;  // calculate the derivative of the error
