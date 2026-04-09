@@ -39,12 +39,11 @@ void PID::UpdateError(double cte, bool first_update) {
   if (first_update) {
     previous_track_error = cte;
     first_update = false;
-  }
-  std::cout << "!!---- first_update: " << first_update << " ----!!" << endl;
-  else if (!first_update) {
+  }  else if (!first_update) {
     previous_track_error =
         track_error;  // save the previous error for derivative calculation
   }
+  std::cout << "!!---- first_update: " << first_update << " ----!!" << endl;
   std::cout << "!!---- previous_track_error: " << previous_track_error << " ----!!" << endl;
   track_error = cte;
   std::cout << "!!---- track_error: " << track_error << " ----!!" << endl;
