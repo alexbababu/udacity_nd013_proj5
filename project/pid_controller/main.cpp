@@ -355,18 +355,18 @@ int main(int argc, char *argv[]) {
       //  First, find the closest waypoint on the trajectory to the current
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
-      /*int lookahead_points = 6;   
+      int lookahead_points = 5;   
       int lookahead_idx = nearest_point_idx + lookahead_points;
       if (lookahead_idx >= x_points.size()) {
         lookahead_idx = x_points.size() - 1;
       }
-      error_steer = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]) - yaw; */
+      double desired_yaw = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]); 
       
-      std::cout << "!---- x_position: " << x_position << endl;
-      std::cout << "!---- y_position: " << y_position << endl;
-      std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
-      std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
-      double desired_yaw = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
+      //std::cout << "!---- x_position: " << x_position << endl;
+      //std::cout << "!---- y_position: " << y_position << endl;
+      //std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
+      //std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
+      //double desired_yaw = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
       error_steer = yaw -desired_yaw;
       while (error_steer > M_PI) error_steer -= 2 * M_PI;
       while (error_steer < -M_PI) error_steer += 2 * M_PI;
