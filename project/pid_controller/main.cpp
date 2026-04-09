@@ -387,7 +387,7 @@ int main(int argc, char *argv[]) {
       std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.track_error << endl;
       std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
       std::cout << "!---- Derivative: " << pid_steer.Kd * pid_steer.derivative_error << endl;
-
+      std::cout << "-----------------------" << endl;
       // Save data
       file_steer.seekg(std::ios::beg);
       for (int j = 0; j < i - 1; ++j) {
@@ -422,9 +422,9 @@ int main(int argc, char *argv[]) {
       // acting as a look-ahead reference for smoother transitions.
       double desired_v = v_points[nearest_point_idx];
       error_throttle = velocity - desired_v;
-      std::cout << "!---- velocity: " << velocity << endl;
-      std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
-      std::cout << "!!---- error_throttle: " << error_throttle << endl;
+      //std::cout << "!---- velocity: " << velocity << endl;
+      //std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
+      //std::cout << "!!---- error_throttle: " << error_throttle << endl;
       double throttle_output;
       double brake_output;
 
@@ -434,8 +434,8 @@ int main(int argc, char *argv[]) {
       // Compute control to apply
       pid_throttle.UpdateError(error_throttle);
       double throttle = pid_throttle.TotalError();
-      std::cout << "!!---- throttle: " << throttle << endl;
-      //throttle = throttle - gain*abs(steer_output);
+      //std::cout << "!!---- throttle: " << throttle << endl;
+      throttle = throttle - gain*abs(steer_output);
       //std::cout << "!!---- steer output: " << steer_output << " gained steer output: " << 0.25*abs(steer_output) << " ----!!" << endl;
       // Adapt the negative throttle to break
       if (throttle > 0.0) {
