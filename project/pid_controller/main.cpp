@@ -249,7 +249,6 @@ int main(int argc, char *argv[]) {
   double Kp_throttle = 0.21;
   double Ki_throttle = 0.0011;
   double Kd_throttle = 0.019;
-  bool first_update = true;
 
   if (argc == 8) {
     try {
@@ -275,7 +274,7 @@ int main(int argc, char *argv[]) {
   pid_throttle.Init(Kp_throttle, Ki_throttle, Kd_throttle, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer,
-               &i, &gain, &first_update](uWS::WebSocket<uWS::SERVER> ws, char* data,
+               &i, &gain](uWS::WebSocket<uWS::SERVER> ws, char* data,
                                 size_t length, uWS::OpCode opCode) {
     auto s = hasData(data);
 
@@ -380,7 +379,7 @@ int main(int argc, char *argv[]) {
        * TODO (step 3): uncomment these lines
        **/
       // Compute control to apply
-      pid_steer.UpdateError(error_steer, first_update);
+      pid_steer.UpdateError(error_steer);
       steer_output = pid_steer.TotalError();
       
       std::cout << "!---- Steer Output: " << steer_output << endl;
@@ -433,7 +432,7 @@ int main(int argc, char *argv[]) {
        * TODO (step 2): uncomment these lines
        **/
       // Compute control to apply
-      pid_throttle.UpdateError(error_throttle, first_update);
+      pid_throttle.UpdateError(error_throttle);
       double throttle = pid_throttle.TotalError();
       std::cout << "!!---- throttle: " << throttle << endl;
       //throttle = throttle - gain*abs(steer_output);

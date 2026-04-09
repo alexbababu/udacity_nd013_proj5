@@ -32,18 +32,11 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi,
   dt = 0.0;
 }
 
-void PID::UpdateError(double cte, bool first_update) {
+void PID::UpdateError(double cte) {
   /**
    * TODO: Update PID errors based on cte.
    **/
-  if (first_update) {
-    previous_track_error = cte;
-    first_update = false;
-  }  else if (!first_update) {
-    previous_track_error =
-        track_error;  // save the previous error for derivative calculation
-  }
-  std::cout << "!!---- first_update: " << first_update << " ----!!" << endl;
+  previous_track_error = track_error;  // save the previous error for derivative calculation
   std::cout << "!!---- previous_track_error: " << previous_track_error << " ----!!" << endl;
   track_error = cte;
   std::cout << "!!---- track_error: " << track_error << " ----!!" << endl;
