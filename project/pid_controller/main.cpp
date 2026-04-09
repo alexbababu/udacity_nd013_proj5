@@ -375,17 +375,19 @@ int main(int argc, char *argv[]) {
       std::cout << "!---- yaw: " << yaw << endl;
       std::cout << "!---- desired_yaw: " << desired_yaw << endl;
       std::cout << "!---- error_steer: " << error_steer << endl;
-      std::cout << "-----------------------" << endl;
+      
       /**
        * TODO (step 3): uncomment these lines
        **/
       // Compute control to apply
       pid_steer.UpdateError(error_steer, first_update);
       steer_output = pid_steer.TotalError();
+      
+      std::cout << "!---- Steer Output: " << steer_output << endl;
+      std::cout << "-----------------------" << endl;
       std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.track_error << endl;
       std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
       std::cout << "!---- Derivative: " << pid_steer.Kd * pid_steer.derivative_error << endl;
-      std::cout << "!---- Steer Output: " << steer_output << endl;
 
       // Save data
       file_steer.seekg(std::ios::beg);

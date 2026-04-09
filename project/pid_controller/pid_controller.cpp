@@ -47,8 +47,7 @@ void PID::UpdateError(double cte, bool first_update) {
   track_error = cte;
   integral_error += cte * dt;  // integrate the error over time
   if (dt != 0) {
-    derivative_error = (track_error - previous_track_error) /
-                       dt;  // calculate the derivative of the error
+    derivative_error = (track_error - previous_track_error) / dt;  // calculate the derivative of the error
   } else {
     derivative_error = 0;
   }
@@ -56,7 +55,7 @@ void PID::UpdateError(double cte, bool first_update) {
   //std::cout << "!!---- track_error: " << track_error << " ----!!" << endl; 
   //std::cout << "!!---- integral_error: " << integral_error << " ----!!" << endl;
   //std::cout << "!!---- derivative_error: " << derivative_error << " ----!!" << endl;
-  //std::cout << "!!---- dt: " << dt << " ----!!" << endl;
+  std::cout << "!!---- dt: " << dt << " ----!!" << endl;
 }
 
 double PID::TotalError() {
