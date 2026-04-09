@@ -249,6 +249,7 @@ int main(int argc, char *argv[]) {
   double Kp_throttle = 0.21;
   double Ki_throttle = 0.0011;
   double Kd_throttle = 0.019;
+  bool first_update = true;
 
   if (argc == 8) {
     try {
@@ -274,7 +275,7 @@ int main(int argc, char *argv[]) {
   pid_throttle.Init(Kp_throttle, Ki_throttle, Kd_throttle, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer,
-               &i, &gain](uWS::WebSocket<uWS::SERVER> ws, char* data,
+               &i, &gain, &first_update](uWS::WebSocket<uWS::SERVER> ws, char* data,
                                 size_t length, uWS::OpCode opCode) {
     auto s = hasData(data);
 
@@ -355,31 +356,34 @@ int main(int argc, char *argv[]) {
       //  First, find the closest waypoint on the trajectory to the current
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
-      int lookahead_points = 6;   
+      /*int lookahead_points = 6;   
       int lookahead_idx = nearest_point_idx + lookahead_points;
       if (lookahead_idx >= x_points.size()) {
         lookahead_idx = x_points.size() - 1;
       }
-      error_steer = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]) - yaw; 
+      error_steer = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]) - yaw; */
       
       std::cout << "!---- x_position: " << x_position << endl;
       std::cout << "!---- y_position: " << y_position << endl;
       std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
       std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
       std::cout << "!---- yaw: " << yaw << endl;
-      std::cout << "!---- angle_between_points: " << angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]) << endl;
-      //double desired_yaw = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
-      //error_steer = desired_yaw - yaw;
+      double desired_yaw = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
+      error_steer = yaw -desired_yaw;
       while (error_steer > M_PI) error_steer -= 2 * M_PI;
       while (error_steer < -M_PI) error_steer += 2 * M_PI;
-      std::cout << "!!---- error_steer: " << error_steer << endl;
+      std::cout << "-----------------------" << endl;
+      std::cout << "!---- yaw: " << yaw << endl;
+      std::cout << "!---- desired_yaw: " << desired_yaw << endl;
+      std::cout << "!---- error_steer: " << error_steer << endl;
+      std::cout << "-----------------------" << endl;
       /**
        * TODO (step 3): uncomment these lines
        **/
       // Compute control to apply
-      pid_steer.UpdateError(error_steer);
+      pid_steer.UpdateError(error_steer, first_update);
       steer_output = pid_steer.TotalError();
-      std::cout << "!---- CTE: " << pid_steer.Kp * pid_steer.track_error << endl;
+      std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.track_error << endl;
       std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
       std::cout << "!---- Derivative: " << pid_steer.Kd * pid_steer.derivative_error << endl;
       std::cout << "!---- Steer Output: " << steer_output << endl;
@@ -416,7 +420,8 @@ int main(int argc, char *argv[]) {
       // target velocity at the end of the horizon and the current speed.
       // Indexing: v_points.back() accesses the last element of the vector,
       // acting as a look-ahead reference for smoother transitions.
-      error_throttle = velocity - v_points[nearest_point_idx];
+      double desired_v = v_points[nearest_point_idx];
+      error_throttle = desired_v - velocity;
       std::cout << "!---- velocity: " << velocity << endl;
       std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
       //std::cout << "!!---- error_throttle: " << error_throttle << endl;
@@ -427,7 +432,7 @@ int main(int argc, char *argv[]) {
        * TODO (step 2): uncomment these lines
        **/
       // Compute control to apply
-      pid_throttle.UpdateError(error_throttle);
+      pid_throttle.UpdateError(error_throttle, first_update);
       double throttle = pid_throttle.TotalError();
       //std::cout << "!!---- throttle: " << throttle << endl;
       throttle = throttle - gain*abs(steer_output);
