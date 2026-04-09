@@ -383,6 +383,7 @@ int main(int argc, char *argv[]) {
       steer_output = pid_steer.TotalError();
       
       std::cout << "!---- Steer Output: " << steer_output << endl;
+      std::cout << "!---- No. Iteration: " << i << endl;
       std::cout << "-----------------------" << endl;
       std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.track_error << endl;
       std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
