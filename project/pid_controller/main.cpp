@@ -367,14 +367,14 @@ int main(int argc, char *argv[]) {
       //std::cout << "!---- y_position: " << y_position << endl;
       //std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
       //std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
-      //double desired_yaw = angle_between_points(x_position, y_position, x_points[nearest_point_idx], y_points[nearest_point_idx]);
       error_steer = yaw - desired_yaw;
       while (error_steer > M_PI) error_steer -= 2 * M_PI;
       while (error_steer < -M_PI) error_steer += 2 * M_PI;
       std::cout << "-----------------------" << endl;
+      std::cout << "!---- No. Iteration: " << i << endl;
       std::cout << "!---- yaw: " << yaw << endl;
-      std::cout << "!---- desired_yaw: " << desired_yaw << endl;
-      std::cout << "!---- error_steer: " << error_steer << endl;
+      //std::cout << "!---- desired_yaw: " << desired_yaw << endl;
+      //std::cout << "!---- error_steer: " << error_steer << endl;
       
       /**
        * TODO (step 3): uncomment these lines
@@ -383,13 +383,12 @@ int main(int argc, char *argv[]) {
       pid_steer.UpdateError(error_steer);
       steer_output = pid_steer.TotalError();
       
-      std::cout << "!---- Steer Output: " << steer_output << endl;
-      std::cout << "!---- No. Iteration: " << i << endl;
+      //std::cout << "!---- Steer Output: " << steer_output << endl;
       std::cout << "-----------------------" << endl;
-      std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.track_error << endl;
-      std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
-      std::cout << "!---- Derivative: " << pid_steer.Kd * pid_steer.derivative_error << endl;
-      std::cout << "-----------------------" << endl;
+      //std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.track_error << endl;
+      //std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
+      //std::cout << "!---- Derivative: " << pid_steer.Kd * pid_steer.derivative_error << endl;
+      //std::cout << "-----------------------" << endl;
       // Save data
       file_steer.seekg(std::ios::beg);
       for (int j = 0; j < i - 1; ++j) {
