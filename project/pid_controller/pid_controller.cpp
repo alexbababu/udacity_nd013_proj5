@@ -35,13 +35,13 @@ void PID::UpdateError(double cte) {
   /**
    * TODO: Update PID errors based on cte.
    **/
-  if (delta_time != =){
-    derivative_error = (cte - previous_track_error) / delta_time;
+  if (dt != 0){
+    derivative_error = (cte - previous_track_error) / dt;
   }
   else{
     derivative_error = 0;
   }
-  integral_error += cte * delta_time;
+  integral_error += cte * dt;
   previous_track_error = cte;
   
 }
