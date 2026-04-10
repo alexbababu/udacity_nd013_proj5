@@ -25,7 +25,6 @@ void PID::Init(double Kpi, double Kii, double Kdi, double output_lim_maxi,
   Kd = Kdi;
   output_lim_max = output_lim_maxi;
   output_lim_min = output_lim_mini;
-  track_error = 0.0;
   previous_track_error = 0.0;
   integral_error = 0.0;
   derivative_error = 0.0;
@@ -36,21 +35,15 @@ void PID::UpdateError(double cte) {
   /**
    * TODO: Update PID errors based on cte.
    **/
-  previous_track_error = track_error;  // save the previous error for derivative calculation
-  track_error = cte;
-  //integral_error += cte * dt;  // integrate the error over time
-  integral_error += cte; 
-  derivative_error = (track_error - previous_track_error);
-  /*if (dt != 0) {
-    derivative_error = (track_error - previous_track_error) / dt;  // calculate the derivative of the error
-  } else {
+  if (delta_time != =){
+    derivative_error = (cte - previous_track_error) / delta_time;
+  }
+  else{
     derivative_error = 0;
-  }*/
-  //std::cout << "!!---- cte: " << cte << " ----!!" << endl;
-  //std::cout << "!!---- track_error: " << track_error << " ----!!" << endl; 
-  //std::cout << "!!---- integral_error: " << integral_error << " ----!!" << endl;
-  //std::cout << "!!---- derivative_error: " << derivative_error << " ----!!" << endl;
-  //std::cout << "!!---- dt: " << dt << " ----!!" << endl;
+  }
+  integral_error += cte * delta_time;
+  previous_track_error = cte;
+  
 }
 
 double PID::TotalError() {
@@ -60,9 +53,8 @@ double PID::TotalError() {
    * output_lim_maxi]
    */
   double control;
-  control = -(Kp * track_error + Ki * integral_error +
-             Kd * derivative_error);  // calculate the control output from the
-                                      // PID formula
+  control = -(Kp * prev_track_error) - (Ki * integral_error) - (Kd * derivative_error);  // calculate the control output from thePID formula 
+
   if (control >
       output_lim_max) {  // limit the control output to the maximum value
     control = output_lim_max;

@@ -17,7 +17,6 @@ public:
     /*
     * Errors
     */
-    double track_error; // cross-track error for lateral or along-track-error for longitudinal error
     double previous_track_error; // previous error for derivative calculation
 
     double integral_error; // integral of the error

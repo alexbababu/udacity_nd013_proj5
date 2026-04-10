@@ -194,15 +194,13 @@ void set_obst(vector<double> x_points, vector<double> y_points,
   obst_flag = true;
 }
 
-int find_index_nearest_point(vector<double> x_points, vector<double> y_points,
-                             double x, double y) {
+int find_index_nearest_point(vector<double> x_points, vector<double> y_points,double x, double y) {
   double min_dist = 0;
   int min_index = 0;
   for (int i = 0; i < x_points.size(); i++) {
-    double dist = sqrt(pow(x_points[i] - x, 2) + pow(y_points[i] - y, 2));
+    double dist = sqrt(pow(x - x_points[i], 2) + pow(y - y_points[i], 2));
     if (i == 0) {
       min_dist = dist;
-      min_index = i;
     } else if (dist < min_dist) {
       min_dist = dist;
       min_index = i;
@@ -329,10 +327,7 @@ int main(int argc, char *argv[]) {
       time(&timer);
       new_delta_time = difftime(timer, prev_timer);
       prev_timer = timer;
-      int nearest_point_idx = find_index_nearest_point(
-          x_points, y_points, x_position,
-          y_position);  // Calculate the index of the nearest point on the
-                        // trajectory
+     
       ////////////////////////////////////////
       // Steering control
       ////////////////////////////////////////
@@ -357,6 +352,8 @@ int main(int argc, char *argv[]) {
       //  First, find the closest waypoint on the trajectory to the current
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
+      int nearest_point_idx = find_index_nearest_point(x_points, y_points, x_position, y_position);// Calculate the index of the nearest point on the trajectory
+    
       int lookahead_idx = nearest_point_idx + lookahead_points;
       if (lookahead_idx >= x_points.size()) {
         lookahead_idx = x_points.size() - 1;
