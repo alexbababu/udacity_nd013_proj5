@@ -53,7 +53,7 @@ double PID::TotalError() {
    * output_lim_maxi]
    */
   double control;
-  control = -(Kp * prev_track_error) - (Ki * integral_error) - (Kd * derivative_error);  // calculate the control output from thePID formula 
+  control = -(Kp * previous_track_error) - (Ki * integral_error) - (Kd * derivative_error);  // calculate the control output from thePID formula 
 
   if (control >
       output_lim_max) {  // limit the control output to the maximum value
