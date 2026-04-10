@@ -358,8 +358,9 @@ int main(int argc, char *argv[]) {
       if (lookahead_idx >= x_points.size()) {
         lookahead_idx = x_points.size() - 1;
       }
-      double desired_yaw = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]); 
-      
+      //double desired_yaw = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]); 
+      //double desired_yaw = angle_between_points(x_position, y_position, x_points[i], y_points[i]);
+      double desired_yaw = angle_between_points(x_position, y_position, x_points.back(), y_points.back());
       //std::cout << "!---- x_position: " << x_position << endl;
       //std::cout << "!---- y_position: " << y_position << endl;
       //std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
