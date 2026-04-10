@@ -243,6 +243,7 @@ int main(int argc, char *argv[]) {
    * initialize values
    **/
   double gain = 0.25; 
+  int lookahead_points = 5;
   double Kp_steer = 0.38;
   double Ki_steer = 0.0005;
   double Kd_steer = 0.45;
@@ -250,15 +251,16 @@ int main(int argc, char *argv[]) {
   double Ki_throttle = 0.0011;
   double Kd_throttle = 0.019;
 
-  if (argc == 8) {
+  if (argc == 9) {
     try {
       gain = std::stod(argv[1]);
-      Kp_steer = std::stod(argv[2]);
-      Ki_steer = std::stod(argv[3]);
-      Kd_steer = std::stod(argv[4]);
-      Kp_throttle = std::stod(argv[5]);
-      Ki_throttle = std::stod(argv[6]);
-      Kd_throttle = std::stod(argv[7]);
+      lookahead_points = std::stoi(argv[2]);
+      Kp_steer = std::stod(argv[3]);
+      Ki_steer = std::stod(argv[4]);
+      Kd_steer = std::stod(argv[5]);
+      Kp_throttle = std::stod(argv[6]);
+      Ki_throttle = std::stod(argv[7]);
+      Kd_throttle = std::stod(argv[8]);
     } catch (const std::exception& e) {
       std::cerr << "Error parsing arguments: " << e.what() << "\n";
       return 1;
@@ -274,7 +276,7 @@ int main(int argc, char *argv[]) {
   pid_throttle.Init(Kp_throttle, Ki_throttle, Kd_throttle, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer,
-               &i, &gain](uWS::WebSocket<uWS::SERVER> ws, char* data,
+               &i, &gain, &lookahead_points](uWS::WebSocket<uWS::SERVER> ws, char* data,
                                 size_t length, uWS::OpCode opCode) {
     auto s = hasData(data);
 
@@ -355,7 +357,6 @@ int main(int argc, char *argv[]) {
       //  First, find the closest waypoint on the trajectory to the current
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
-      int lookahead_points = 5;   
       int lookahead_idx = nearest_point_idx + lookahead_points;
       if (lookahead_idx >= x_points.size()) {
         lookahead_idx = x_points.size() - 1;
