@@ -383,7 +383,7 @@ int main(int argc, char *argv[]) {
       
       std::cout << "!---- Steer Output: " << steer_output << endl;
       std::cout << "-----------------------" << endl;
-      std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.prev_track_error << endl;
+      std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.previous_track_error<< endl;
       std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
       std::cout << "!---- Derivative: " << pid_steer.Kd * pid_steer.derivative_error << endl;
       std::cout << "-----------------------" << endl;
