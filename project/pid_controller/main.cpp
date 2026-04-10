@@ -421,7 +421,8 @@ int main(int argc, char *argv[]) {
       // target velocity at the end of the horizon and the current speed.
       // Indexing: v_points.back() accesses the last element of the vector,
       // acting as a look-ahead reference for smoother transitions.
-      double desired_v = v_points[nearest_point_idx];
+      //double desired_v = v_points[nearest_point_idx];
+      double desired_v = v_points.back();
       error_throttle = velocity - desired_v;
       //std::cout << "!---- velocity: " << velocity << endl;
       //std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
