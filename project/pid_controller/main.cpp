@@ -241,13 +241,13 @@ int main(int argc, char* argv[]) {
    * TODO (Step 1): create pid (pid_throttle) for throttle command and
    * initialize values
    **/
-  double gain = 0.25;
-  int lookahead_points = 5;
-  double Kp_steer = 0.38;
-  double Ki_steer = 0.0005;
-  double Kd_steer = 0.45;
-  double Kp_throttle = 0.21;
-  double Ki_throttle = 0.0011;
+  double gain = 0.8;
+  int lookahead_points = 0;
+  double Kp_steer = 0.15;
+  double Ki_steer = 0.0011;
+  double Kd_steer = 0.90;
+  double Kp_throttle = 0.15;
+  double Ki_throttle = 0.0009;
   double Kd_throttle = 0.019;
 
   if (argc == 9) {
