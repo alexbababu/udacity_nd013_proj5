@@ -101,21 +101,21 @@ K_D_Throttle: float Derivative gain for throttle PID controller
 
 # Task 1 Run the simulator and see in the desktop mode the car in the CARLA simulator. Take a screenshot and add it to your report. The car should not move in the simulation.
 
-![alt text](./pid_controller/screenshot/ToDo1-Screenshot.png)
+![alt text](./project/pid_controller/screenshot/ToDo1-Screenshot.png)
 
 # Task 3 PID controller for steer:
 I was able to pass the first obstacle, but I was not able to pass the second obstacle, as in my simulation the vehicles yaw was acting up. The instruction says "yaw gives the actual rotational angle of the car." However, despite the vehcile almost facing the street, yaw suddenly increases to Pi/2. 
-![alt text](./pid_controller/screenshot/yaw_acting_up.png)
+![alt text](./project/pid_controller/screenshot/yaw_acting_up.png)
 
 I was told in the forum, I don't need the vehicle to complete the whole track to pass the project. 
 https://knowledge.udacity.com/questions/1082949
 
 # Question 1: Add the plots to your report and explain them (describe what you see)
-![alt text](./pid_controller/screenshot/steer2.png)
+![alt text](./project/pid_controller/screenshot/steer2.png)
 This plot illustrates the relationship between the steering angle error (error_steer) and the resulting steering command (steer_output). The steering error is calculated as the difference between the desired target heading and the vehicle's actual orientation (yaw). As seen in the graphs, the steer_output consistently acts in the opposite direction of the error_steer. This demonstrates the fundamental principle of negative feedback in a PID controller: the system applies a corrective torque to minimize the deviation and bring the error back to zero.
 At the end you see the fast change of the vehicles yaw (despite still facing the street) and therefore a fast rise in error_steer and therefore a sharp unexpected turn. 
 
-![alt text](./pid_controller/screenshot/throttle.png)
+![alt text](./project/pid_controller/screenshot/throttle.png)
 This plot shows the relationship between the velocity error (error_throttle), the throttle command (throttle_output), and the braking command (brake_output). The velocity error is defined as the difference between the actual speed of the car and the target speed from the path data. Similar to the steering control, the throttle_output and brake_output act in opposition to the error to regulate the speed.
 
 When the car is too slow (negative error), the throttle_output increases to accelerate. Conversely, when the car exceeds the target speed (positive error), the throttle_output drops to zero and the brake_output activates to decelerate the vehicle. The plots show that after tuning, the throttle command stabilizes, maintaining a steady speed even when the error fluctuates slightly due to road conditions.
