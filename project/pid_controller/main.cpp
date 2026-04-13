@@ -194,7 +194,8 @@ void set_obst(vector<double> x_points, vector<double> y_points,
   obst_flag = true;
 }
 
-int find_index_nearest_point(vector<double> x_points, vector<double> y_points,double x, double y) {
+int find_index_nearest_point(vector<double> x_points, vector<double> y_points,
+                             double x, double y) {
   double min_dist = 0;
   int min_index = 0;
   for (int i = 0; i < x_points.size(); i++) {
@@ -209,7 +210,7 @@ int find_index_nearest_point(vector<double> x_points, vector<double> y_points,do
   return min_index;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   cout << "starting server" << endl;
   uWS::Hub h;
 
@@ -240,7 +241,7 @@ int main(int argc, char *argv[]) {
    * TODO (Step 1): create pid (pid_throttle) for throttle command and
    * initialize values
    **/
-  double gain = 0.25; 
+  double gain = 0.25;
   int lookahead_points = 5;
   double Kp_steer = 0.38;
   double Ki_steer = 0.0005;
@@ -264,18 +265,25 @@ int main(int argc, char *argv[]) {
       return 1;
     }
   } else if (argc > 1) {
-    std::cerr << "Usage: " << argv[0] << " <Kp_steer> <Ki_steer> <Kd_steer> <Kp_throttle> <Ki_throttle> <Kd_throttle>\n";
+    std::cerr << "Usage: " << argv[0]
+              << " <Kp_steer> <Ki_steer> <Kd_steer> <Kp_throttle> "
+                 "<Ki_throttle> <Kd_throttle>\n";
     return 1;
   }
 
   PID pid_steer = PID();
   PID pid_throttle = PID();
-  pid_steer.Init(Kp_steer, Ki_steer, Kd_steer, 1.2, -1.2);  // 1.2 and -1.2 are the output limits for the steer command, and are given in the rubrik
-  pid_throttle.Init(Kp_throttle, Ki_throttle, Kd_throttle, 1.0, -1.0);  // 1.0 and -1.0 are the output limits for the throttle command, and are given in the rubrik
+  pid_steer.Init(Kp_steer, Ki_steer, Kd_steer, 1.2,
+                 -1.2);  // 1.2 and -1.2 are the output limits for the steer
+                         // command, and are given in the rubrik
+  pid_throttle.Init(Kp_throttle, Ki_throttle, Kd_throttle, 1.0,
+                    -1.0);  // 1.0 and -1.0 are the output limits for the
+                            // throttle command, and are given in the rubrik
 
   h.onMessage([&pid_steer, &pid_throttle, &new_delta_time, &timer, &prev_timer,
-               &i, &gain, &lookahead_points](uWS::WebSocket<uWS::SERVER> ws, char* data,
-                                size_t length, uWS::OpCode opCode) {
+               &i, &gain, &lookahead_points](uWS::WebSocket<uWS::SERVER> ws,
+                                             char* data, size_t length,
+                                             uWS::OpCode opCode) {
     auto s = hasData(data);
 
     if (s != "") {
@@ -327,7 +335,7 @@ int main(int argc, char *argv[]) {
       time(&timer);
       new_delta_time = difftime(timer, prev_timer);
       prev_timer = timer;
-     
+
       ////////////////////////////////////////
       // Steering control
       ////////////////////////////////////////
@@ -352,19 +360,25 @@ int main(int argc, char *argv[]) {
       //  First, find the closest waypoint on the trajectory to the current
       //  position. Then, subtract the desired angle (to reach that point) from
       //  the current vehicle yaw.
-      int nearest_point_idx = find_index_nearest_point(x_points, y_points, x_position, y_position);// Calculate the index of the nearest point on the trajectory
-    
+      int nearest_point_idx = find_index_nearest_point(
+          x_points, y_points, x_position,
+          y_position);  // Calculate the index of the nearest point on the
+                        // trajectory
+
       int lookahead_idx = nearest_point_idx + lookahead_points;
       if (lookahead_idx >= x_points.size()) {
         lookahead_idx = x_points.size() - 1;
       }
-      //double desired_yaw = angle_between_points(x_position, y_position, x_points[lookahead_idx], y_points[lookahead_idx]); 
-      
-      double desired_yaw = angle_between_points(x_position, y_position, x_points.back(), y_points.back());
-      //std::cout << "!---- x_position: " << x_position << endl;
-      //std::cout << "!---- y_position: " << y_position << endl;
-      //std::cout << "!---- x_points[nearest_point_idx]: " << x_points[nearest_point_idx] << endl;
-      //std::cout << "!---- y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
+      double desired_yaw =
+          angle_between_points(x_position, y_position, x_points[lookahead_idx],
+                               y_points[lookahead_idx]);
+
+      // double desired_yaw = angle_between_points(x_position, y_position,
+      // x_points.back(), y_points.back()); std::cout << "!---- x_position: " <<
+      // x_position << endl; std::cout << "!---- y_position: " << y_position <<
+      // endl; std::cout << "!---- x_points[nearest_point_idx]: " <<
+      // x_points[nearest_point_idx] << endl; std::cout << "!----
+      // y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
       error_steer = yaw - desired_yaw;
       while (error_steer > M_PI) error_steer -= 2 * M_PI;
       while (error_steer < -M_PI) error_steer += 2 * M_PI;
@@ -373,19 +387,22 @@ int main(int argc, char *argv[]) {
       std::cout << "!---- yaw: " << yaw << endl;
       std::cout << "!---- desired_yaw: " << desired_yaw << endl;
       std::cout << "!---- error_steer: " << error_steer << endl;
-      
+
       /**
        * TODO (step 3): uncomment these lines
        **/
       // Compute control to apply
       pid_steer.UpdateError(error_steer);
       steer_output = pid_steer.TotalError();
-      
+
       std::cout << "!---- Steer Output: " << steer_output << endl;
       std::cout << "-----------------------" << endl;
-      std::cout << "!---- track error: " << pid_steer.Kp * pid_steer.previous_track_error<< endl;
-      std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error << endl;
-      std::cout << "!---- Derivative: " << pid_steer.Kd * pid_steer.derivative_error << endl;
+      std::cout << "!---- track error: "
+                << pid_steer.Kp * pid_steer.previous_track_error << endl;
+      std::cout << "!---- Integral: " << pid_steer.Ki * pid_steer.integral_error
+                << endl;
+      std::cout << "!---- Derivative: "
+                << pid_steer.Kd * pid_steer.derivative_error << endl;
       std::cout << "-----------------------" << endl;
       // Save data
       file_steer.seekg(std::ios::beg);
@@ -419,12 +436,14 @@ int main(int argc, char *argv[]) {
       // target velocity at the end of the horizon and the current speed.
       // Indexing: v_points.back() accesses the last element of the vector,
       // acting as a look-ahead reference for smoother transitions.
-      //double desired_v = v_points[nearest_point_idx];
-      double desired_v = v_points.back();
+      // double desired_v = v_points[nearest_point_idx];
+      double desired_v = v_points[lookahead_idx];
+      // double desired_v = v_points.back();
       error_throttle = velocity - desired_v;
-      //std::cout << "!---- velocity: " << velocity << endl;
-      //std::cout << "!---- v_points[nearest_point_idx]: " << v_points[nearest_point_idx] << endl;
-      //std::cout << "!!---- error_throttle: " << error_throttle << endl;
+      // std::cout << "!---- velocity: " << velocity << endl;
+      // std::cout << "!---- v_points[nearest_point_idx]: " <<
+      // v_points[nearest_point_idx] << endl; std::cout << "!!----
+      // error_throttle: " << error_throttle << endl;
       double throttle_output;
       double brake_output;
 
@@ -434,10 +453,11 @@ int main(int argc, char *argv[]) {
       // Compute control to apply
       pid_throttle.UpdateError(error_throttle);
       double throttle = pid_throttle.TotalError();
-      //std::cout << "!!---- throttle: " << throttle << endl;
-      throttle = throttle - gain*abs(steer_output);
-      //std::cout << "!!---- steer output: " << steer_output << " gained steer output: " << 0.25*abs(steer_output) << " ----!!" << endl;
-      // Adapt the negative throttle to break
+      // std::cout << "!!---- throttle: " << throttle << endl;
+      throttle = throttle - gain * abs(steer_output);
+      // std::cout << "!!---- steer output: " << steer_output << " gained steer
+      // output: " << 0.25*abs(steer_output) << " ----!!" << endl;
+      //  Adapt the negative throttle to break
       if (throttle > 0.0) {
         throttle_output = throttle;
         brake_output = 0;
