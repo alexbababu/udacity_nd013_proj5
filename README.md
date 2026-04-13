@@ -1,101 +1,10 @@
-alexbababu'S solution for UDACITY ND013 Project 5
+# alexbababu's solution for UDACITY ND013 Project Control and Trajectory Tracking for Autonomous Vehicle
 
 
 # Control and Trajectory Tracking for Autonomous Vehicle
 
-In this project, you will apply the skills you have acquired in this course to design a Proportional-Integral-Derivative (PID) controller to perform vehicle trajectory tracking. Given a trajectory as an array of locations, and a simulation environment, you will design and code a PID controller and test its efficiency on the CARLA simulator used in the industry.
+In this project, I applied the skills I have acquired in this course to design a Proportional-Integral-Derivative (PID) controller to perform vehicle trajectory tracking. Given a trajectory as an array of locations, and a simulation environment, I designed and coded a PID controller and tested its efficiency on the CARLA simulator used in the industry.
 
-## Dependency - Udacity VM Workspace
-The state code in this repository is aligned to run on the Udacity VM workspace. Refer to the classroom page **Ubuntu VM Workspace - Overview** to learn how to access the VM workspace and its restrictions and best practices. 
-
-However, to set up your local machine with the necessary tools, you must have either *Windows Subsystem for Linux* (WSL) or *Ubuntu 20.04* or *18.04 LTS*. Below is the list of tools installed in the Udacity VM workspace that you should install on your local machine.
-
-- [CARLA simulator 0.9.9.4](https://github.com/carla-simulator/carla/releases/tag/0.9.9). <br/>
-    You can find more details at [CARLA Quick Start Installation](https://carla.readthedocs.io/en/latest/start_quickstart/). The deb installation is the easiest way to get the latest release in Linux.
-    ```bash
-    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 1AF1527DE64CB8D9
-    sudo add-apt-repository "deb [arch=amd64] http://dist.carla.org/carla $(lsb_release -sc) main"
-    sudo apt-get update # Update the Debian package index
-    sudo apt-get install carla-simulator=0.9.10-2 
-    ```
-
-    The installation directory must be **/opt/carla-simulator/** on your Linux machine. To verify, open a terminal an launch CARLA as:
-    ```bash
-    cd /opt/carla-simulator
-    ./CarlaUE4.sh
-    ```
-    The Carla Simulator should launch in a few seconds. You can close it after verification. 
-
-
-- [NICE DCV Server](https://docs.aws.amazon.com/dcv/latest/adminguide/setting-up-installing-linux-prereq.html). <br/>
-    This includes the Nvidia drivers along with CUDA libraries for the underlying Tesla T4 GPU.
-
-    ```bash
-    Sat Oct 14 15:31:45 2023       
-    +---------------------------------------------------------------------------------------+
-    | NVIDIA-SMI 535.104.12             Driver Version: 535.104.12   CUDA Version: 12.2     |
-    |-----------------------------------------+----------------------+----------------------+
-    | GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-    | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
-    |                                         |                      |               MIG M. |
-    |=========================================+======================+======================|
-    |   0  Tesla T4                       On  | 00000000:00:1E.0 Off |                    0 |
-    | N/A   31C    P0              27W /  70W |   2093MiB / 15360MiB |     27%      Default |
-    |                                         |                      |                  N/A |
-    +-----------------------------------------+----------------------+----------------------+
-                                                                                            
-    +---------------------------------------------------------------------------------------+
-    | Processes:                                                                            |
-    |  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
-    |        ID   ID                                                             Usage      |
-    |=======================================================================================|
-    |    0   N/A  N/A      1055      G   /usr/lib/xorg/Xorg                           67MiB |
-    |    0   N/A  N/A      1521      G   /usr/lib/xorg/Xorg                           89MiB |
-    |    0   N/A  N/A      1669      G   /usr/bin/gnome-shell                         23MiB |
-    |    0   N/A  N/A      1948    C+G   /usr/lib/x86_64-linux-gnu/dcv/dcvagent      398MiB |
-    |    0   N/A  N/A      3320      G   ...sion,SpareRendererForSitePerProcess       30MiB |
-    |    0   N/A  N/A      4489    C+G   ...aries/Linux/CarlaUE4-Linux-Shipping     1348MiB |
-    +---------------------------------------------------------------------------------------+
-    ```
-
-
-    ```bash
-    dcv version
-    # Output
-    NICE DCV 2023.0 (r15487)
-    Copyright (C) 2010-2023 NICE s.r.l.
-    ```
-
-- C++ 
-    ```bash
-    gcc --version
-    # Output
-    gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
-    ```
-- Git
-- [OpenCV](https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html)
-- [CMake](https://askubuntu.com/questions/161104/how-do-i-install-make) and Make
-- [VSCode](https://code.visualstudio.com/download)
-- [Eigen Library for C++](https://eigen.tuxfamily.org/index.php?title=Main_Page)
-- [Point Cloud Library](https://pointclouds.org/downloads/)
-- Python3 and Pip v20.xx or above. 
-    ```bash
-    python3 --version
-    # Output
-    Python 3.8.10
-    ```
-- ROS
-
-- Project specific dependencies
-    ```bash
-    # Required for building project
-    sudo apt-get install -y libgoogle-glog-dev libgtest-dev
-    # Required for running project. 
-    # Install carla python package
-    sudo python3 /usr/lib/python3/dist-packages/easy_install.py /opt/carla-simulator/PythonAPI/carla/dist/carla-0.9.9-py3.7-linux-x86_64.egg
-    # Install python requirements
-    pip install pandas matplotlib numpy pygame websocket-client
-    ```
 
 # Instructions
 The sections ahead will guide you through the steps to build and run the project. 
@@ -109,15 +18,15 @@ Once you log into the VM, open a Terminal window.
 
 ## Step 2. Clone the Repository
 
-Fork the repository to your Github account and clone the repository to the workspace using the commands below. 
+Clone my Github Repository
 
 ```bash
-git clone https://github.com/udacity/nd013-c6-control-starter.git
+git clone https://github.com/alexbababu/udacity_nd013_proj5.git
 ```
 
 Change to the project directory.
 ```bash
-cd nd013-c6-control-starter/project
+cd udacity_nd013_proj5/project
 ```
 
 <br/><br/>
@@ -150,7 +59,7 @@ Start the Carla server by executing the following shell script.
 <br/><br/>
 
 ## Step 5. Install Dependencies
-Open another Terminal tab, and change to the **nd013-c6-control-starter/project**  directory. Execute the following shell script to install the project-specific dependencies. 
+Open another Terminal tab, and change to the **udacity_nd013_proj5/project**  directory. Execute the following shell script to install the project-specific dependencies. 
 ```bash
 ./install-ubuntu.sh
 ```
@@ -158,42 +67,7 @@ This file will install utilities such as, `libuv1-dev`, `libssl-dev`, `libz-dev`
 
 <br/><br/>
 
-## Step 6. Update the Project Code
-
-Change to the **pid_controller/** directory.
-```bash
-cd pid_controller/
-```
-Before you start coding, we strongly recommend you look at the rubric in your classroom, against which the human Mentor will review your submission. Your submission must satisfy all rubric criteria to pass the project; otherwise, the Mentor may ask you to re-submit. 
-
-
-Update the following files as per the classroom instructions. You will TODO markers as well in these files. 
-
-- **pid_controller.h**
-- **pid_controller.cpp**
-- **main.cpp**
-
-
-<br/>
-
-> **Important**: At this moment, it is important to save your work and push it back to the remote Github repository. 
-
-<br/><br/>
-
-### Update Notes
-In the previous version of the project starter code, we had **libcarla-install/** and **rpclib/** directories inside the **pid_controller/** directory. But, those directories are no longer needed in the current version of the starter code because the current **CMakeLists.txt** file has corresponding `includes` and `libs` added at `/opt/carla-source`.
-
-To give some old context, when we had **rpclib/** directory inside the starter files, we used to compile the **rpclib** library using the following commands. 
-```bash
-cd pid_controller/
-rm -rf rpclib
-git clone https://github.com/rpclib/rpclib.git
-```
-This library is a **msgpack-rpc** library written using modern C++. The goal of building this library was to provide a simple RPC solution. However, all of the above-mentioned steps are **no longer needed** in the current version of the project strarter code. 
-
-<br/><br/>
-
-## Step 7. Build and Execute the Project
+## Step 6. Build the Project
 
 When you finish updating the project files, you can execute the project using the commands below. 
 
@@ -205,24 +79,65 @@ cmake .
 make
 ```
 
-```bash
-# Run the project
-cd ..
-# Run the following commands from the nd013-c6-control-starter/project directory
-./run_main_pid.sh
-```
-If the execution fails silently, you can use **ctrl + C** to stop, and try again. 
+<br/><br/>
 
-Another possible error you may get is `bind failed. Error: Address already in use`. In such a case, you can kill the process occupying the required port using the commands below.
+## Step 6. Execute the Project Script
 
+Change to the **pid_controller/** directory.
 ```bash
-ps -aux | grep carla
-# Use the IDs displayed in the output of the last command. 
-kill id     
+./run_main_pid.sh GAIN LOOKAHEAD_DISTANCE K_P_Steer K_I_Steer K_D_Steer K_P_Throttle K_I_Throttle K_D_Throttle
 ```
+GAIN: float the value to multiply the absolute value of the steer output by to slow down for sharp turns
+LOOKAHEAD_DISTANCE: int the distance to look ahead for the trajectory
+K_P_Steer: float Proportional gain for steer PID controller
+K_I_Steer: float Integral gain for steer PID controller
+K_D_Steer: float Derivative gain for steer PID controller
+K_P_Throttle: float Proportional gain for throttle PID controller
+K_I_Throttle: float Integral gain for throttle PID controller
+K_D_Throttle: float Derivative gain for throttle PID controller
 
 <br/><br/>
 
-## Step 8. Check the Rubric and Submit
 
-Re-check the rubric in the classroom and ensure that your submission satisfies all rubric criteria to pass the project. Once you are confident, submit the project. 
+# Task 1 Run the simulator and see in the desktop mode the car in the CARLA simulator. Take a screenshot and add it to your report. The car should not move in the simulation.
+
+![alt text](./pid_controller/screenshot/ToDo1-Screenshot.png)
+
+# Task 3 PID controller for steer:
+I was able to pass the first obstacle, but I was not able to pass the second obstacle, as in my simulation the vehicles yaw was acting up. The instruction says "yaw gives the actual rotational angle of the car." However, despite the vehcile almost facing the street, yaw suddenly increases to Pi/2. 
+![alt text](./pid_controller/screenshot/yaw_acting_up.png)
+
+I was told in the forum, I don't need the vehicle to complete the whole track to pass the project. 
+https://knowledge.udacity.com/questions/1082949
+
+# Question 1: Add the plots to your report and explain them (describe what you see)
+![alt text](./pid_controller/screenshot/steer2.png)
+This plot illustrates the relationship between the steering angle error (error_steer) and the resulting steering command (steer_output). The steering error is calculated as the difference between the desired target heading and the vehicle's actual orientation (yaw). As seen in the graphs, the steer_output consistently acts in the opposite direction of the error_steer. This demonstrates the fundamental principle of negative feedback in a PID controller: the system applies a corrective torque to minimize the deviation and bring the error back to zero.
+At the end you see the fast change of the vehicles yaw (despite still facing the street) and therefore a fast rise in error_steer and therefore a sharp unexpected turn. 
+
+![alt text](./pid_controller/screenshot/throttle.png)
+This plot shows the relationship between the velocity error (error_throttle), the throttle command (throttle_output), and the braking command (brake_output). The velocity error is defined as the difference between the actual speed of the car and the target speed from the path data. Similar to the steering control, the throttle_output and brake_output act in opposition to the error to regulate the speed.
+
+When the car is too slow (negative error), the throttle_output increases to accelerate. Conversely, when the car exceeds the target speed (positive error), the throttle_output drops to zero and the brake_output activates to decelerate the vehicle. The plots show that after tuning, the throttle command stabilizes, maintaining a steady speed even when the error fluctuates slightly due to road conditions.
+
+# Question 2: What is the effect of the PID according to the plots, how each part of the PID affects the control command?
+The plot clearly shows the steer_output reacting to the error_steering to provide corrective action. However, the initial overshoot suggests that the damping is insufficient. Since the steering response is relatively weak, it indicates that $K_p$ is too low, providing inadequate torque to close the gap quickly. Consequently, $K_d$ is also likely too small to effectively dampen the resulting oscillations.Towards the end of the plot, the error and output lines remain nearly parallel. This constant offset is a classic steady-state error (drift). This could likely be eliminated by properly tuning the $K_i$ (Integral) component, which is designed to accumulate and correct such long-term deviations.
+
+The throttle plot shows that the throttle_output follows the error_throttle very consistently and without any overshoot. The control signal is conservative, meaning the acceleration is smooth and steady rather than aggressive.However, because the response is so cautious, the car maintains a significant steady-state error (the gap between actual and target speed). The current $K_p$ (Proportional) gain is too low to close this gap effectively, and since the output does not increase over time to compensate, the $K_i$ (Integral) component is likely too small or not active enough to eliminate this remaining offset.
+
+# Question 3: How would you design a way to automatically tune the PID parameters?
+To automate the parameter search, I would implement the Twiddle algorithm (Coordinate Descent). This allows the system to systematically "guess" better $K_p, K_i$, and $K_d$ values based on actual performance feedback.
+I would define a cost function based on the average steer angle error (for lateral control) and the average throttle error (for longitudinal control) over a specific track segment.
+The algorithm iterates through the parameter vector. It first increases a parameter; if that doesn't reduce the error, it tries decreasing it. If neither works, it resets and reduces the search step for that specific parameter.
+This process is applied separately to both the steering and throttle controllers to ensure both systems are optimized for stability and speed.
+A major hurdle is that Twiddle requires hundreds of iterations. Since old vehicles or debris from a crash would block the path, the simulation must be reset after every run.
+
+# Question 4: PID controller is a model free controller, i.e. it does not use a model of the car. Could you explain the pros and cons of this type of controller?
+## Pros
+- Simplicity and Versatility. It is not necessary to solve complex differential equations for vehicle dynamics. The same controller can be used for different vehicles with different dynamics by tuning the parameters.
+- Low computational cost
+- No knowledge of the system dynamics is required. On does not need to know how heavy a car is, its aerodynamics, etc. The PID Controller just reacts to what happens.
+
+## Cons
+- Tuning Difficulty. It can be difficult to find the right PID parameters for a specific system. 
+- PID Controller is reactive, and not proactive. PID only reacts to what happens, and does not anticipate future events. For example, if the car is going too fast into a turn, the PID controller will only react once the car is already in the turn, and may not be able to correct the error in time.

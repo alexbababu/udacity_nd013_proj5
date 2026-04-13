@@ -358,27 +358,28 @@ int main(int argc, char* argv[]) {
       // error_steer = 0;
       //  Determine the steering error by calculating the heading difference.
       //  First, find the closest waypoint on the trajectory to the current
-      //  position. Then, subtract the desired angle (to reach that point) from
-      //  the current vehicle yaw.
+      //  position.
       int nearest_point_idx = find_index_nearest_point(
           x_points, y_points, x_position,
           y_position);  // Calculate the index of the nearest point on the
                         // trajectory
 
+      // look a head distance is the number of points to look ahead in the
+      // trajectory. later set to 0
       int lookahead_idx = nearest_point_idx + lookahead_points;
       if (lookahead_idx >= x_points.size()) {
         lookahead_idx = x_points.size() - 1;
       }
+
+      // desired_yaw is the angle between the current position and the look a
+      // head point
       double desired_yaw =
           angle_between_points(x_position, y_position, x_points[lookahead_idx],
                                y_points[lookahead_idx]);
 
-      // double desired_yaw = angle_between_points(x_position, y_position,
-      // x_points.back(), y_points.back()); std::cout << "!---- x_position: " <<
-      // x_position << endl; std::cout << "!---- y_position: " << y_position <<
-      // endl; std::cout << "!---- x_points[nearest_point_idx]: " <<
-      // x_points[nearest_point_idx] << endl; std::cout << "!----
-      // y_points[nearest_point_idx]: " << y_points[nearest_point_idx] << endl;
+      // error_steer is the difference between the current yaw and the desired
+      // yaw. However yaw seems not to be the current yaw of the vehcile is
+      // respect to the global map (see attached screenshot)
       error_steer = yaw - desired_yaw;
       while (error_steer > M_PI) error_steer -= 2 * M_PI;
       while (error_steer < -M_PI) error_steer += 2 * M_PI;
@@ -432,11 +433,10 @@ int main(int argc, char* argv[]) {
       // modify the following line for step 2
       // error_throttle = 0;
 
-      // Calculate the velocity error as the difference between the
-      // target velocity at the end of the horizon and the current speed.
-      // Indexing: v_points.back() accesses the last element of the vector,
-      // acting as a look-ahead reference for smoother transitions.
-      // double desired_v = v_points[nearest_point_idx];
+      // error_throttle is calculate by the difference of the current velocity
+      // and the desired velocity desired_v desired_v is the velocity at the
+      // current nearest point of the trajectory + a look a head distance. later
+      // look a head distance was set to 0.
       double desired_v = v_points[lookahead_idx];
       // double desired_v = v_points.back();
       error_throttle = velocity - desired_v;
@@ -454,6 +454,9 @@ int main(int argc, char* argv[]) {
       pid_throttle.UpdateError(error_throttle);
       double throttle = pid_throttle.TotalError();
       // std::cout << "!!---- throttle: " << throttle << endl;
+
+      // Slow down for sharp turns. Therefore subtract the absolute value of the
+      // steer output multiplied by a gain factor
       throttle = throttle - gain * abs(steer_output);
       // std::cout << "!!---- steer output: " << steer_output << " gained steer
       // output: " << 0.25*abs(steer_output) << " ----!!" << endl;
